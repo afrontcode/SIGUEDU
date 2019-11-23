@@ -51,7 +51,7 @@ public class TipoUsuarioDAOTest {
         //assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
-        assertEquals(0, result.size());
+        assertEquals(2, result.size());
     }
 
     /*

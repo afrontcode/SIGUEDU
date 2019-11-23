@@ -34,7 +34,7 @@ public class TipoUsuarioDAO implements  DAOBaseI<TipoUsuario, Integer>{
             {
                 objEncontrado = new TipoUsuario();
                 objEncontrado.setId(rs.getInt("id"));
-                objEncontrado.setDescripcion(rs.getString("dec"));
+                objEncontrado.setDescripcion(rs.getString("descripcion"));
                 resultado.add(objEncontrado);
                 
             }

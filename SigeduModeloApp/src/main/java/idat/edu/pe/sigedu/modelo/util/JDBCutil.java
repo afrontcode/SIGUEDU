@@ -1,8 +1,9 @@
 package idat.edu.pe.sigedu.modelo.util;
 
-import com.mysql.jdbc.PreparedStatement;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -18,7 +19,7 @@ public class JDBCutil {
     
     private final String driverClass = "com.mysql.jdbc.Driver";
     
-    private Connection conecction;
+    private Connection conneccion;
     
     private PreparedStatement sentencia;
     
@@ -31,8 +32,8 @@ public class JDBCutil {
             Class.forName(driverClass);
             try {
                 //2.-Obtener connecion
-                conecction = DriverManager.getConnection(urlConeccion, usuarioBD, passwordBD);
-                if(conecction !=null)
+                conneccion = DriverManager.getConnection(urlConeccion, usuarioBD, passwordBD);
+                if(conneccion !=null)
                     System.out.println("Coneccion exitosa");
             } catch (SQLException ex) {
                 Logger.getLogger(JDBCutil.class.getName()).log(Level.SEVERE, null, ex);
@@ -44,8 +45,53 @@ public class JDBCutil {
     }
 
     public Connection getConecction() {
-        return conecction;
+        return conneccion;
     }
+    
+    public PreparedStatement obtenerPreparedStatement(String sql)
+    {
+        try {
+            sentencia = conneccion.prepareStatement(sql);
+        }catch (SQLException ex){
+            Logger.getLogger(JDBCutil.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return sentencia;
+    }
+    
+    public ResultSet ejecutarConsulta(PreparedStatement statementSQL)
+    {
+        sentencia = statementSQL;
+        try{
+            resultados = sentencia.executeQuery();
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBCutil.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return resultados;
+    }
+    
+    public void ejecutarActualizacion(PreparedStatement statementSQL)
+    {
+        sentencia = statementSQL;
+        try {
+            sentencia.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(JDBCutil.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+     public void cerrarObjetos()
+        {
+            try {
+                if(resultados != null)
+                    resultados.close();
+                if(sentencia != null)
+                    sentencia.close();
+                if(conneccion != null)
+                    conneccion.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(JDBCutil.class.getName()).log(Level.SEVERE, null , ex);
+            }
+        }
     
             
             
